@@ -1,0 +1,16 @@
+#pragma once
+
+
+//DEVICE ID ON LO
+const char * deviceid = "";
+
+// YOUR GPRS CREDENTIALS
+// Leave empty, if missing user or pass
+const char apn[] = "";
+const char user[] = "";
+const char pass[] = "";
+
+//BROKER CREDENTIALS
+const char* broker = "liveobjects.orange-business.com";
+const char LO_MDP[] = "";
+const char LO_USER[] = "json+device";

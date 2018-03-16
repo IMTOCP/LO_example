@@ -292,3 +292,5 @@ __pycache__/
 *.exe
 *.out
 *.app
+
+LO_config.h

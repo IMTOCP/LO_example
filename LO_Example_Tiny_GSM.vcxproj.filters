@@ -17,5 +17,9 @@
   <ItemGroup>
     <None Include="LO_Example_Tiny_GSM.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.LO_Example_Tiny_GSM.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
