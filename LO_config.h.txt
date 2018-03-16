@@ -14,3 +14,5 @@ const char pass[] = "";
 const char* broker = "liveobjects.orange-business.com";
 const char LO_MDP[] = "";
 const char LO_USER[] = "json+device";
+
+int PORT = 1883;
