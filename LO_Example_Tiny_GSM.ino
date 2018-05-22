@@ -48,10 +48,11 @@ node-red-dashboard
 
 #include "LO_config.h"
 #include "CMD.h"
+#define _rstpin  4
 
 //IF YOU  USE HARDWARE SERIAL ON MEGA, LEONARDO, MICRO
-#define SerialAT Serial3
-
+#define SerialAT Serial1
+#define LED_BUILTIN 13
 // IF YOU USE SOFTWARE SERIAL ON UNO, NANO
 //#include <SoftwareSerial.h>
 //SoftwareSerial SerialAT(2, 3); // RX, TX
@@ -114,6 +115,12 @@ void initSensor()
 *  Function to setup the board
 */
 void setup() {
+	pinMode(_rstpin, OUTPUT);
+	digitalWrite(_rstpin, HIGH);
+	delay(10);
+	digitalWrite(_rstpin, LOW);
+	delay(100);
+	digitalWrite(_rstpin, HIGH);
 	Serial.begin(115200);
 	Serial.println("***SETUP***");
 	// Set console baud rate
@@ -406,7 +413,8 @@ void mqttCallback(char* topic, uint8_t * payload, unsigned int len) {
 	if (String(topic) == receiveCfgTopic) {            // When receiving message from topic "dev/cfg/upd"     
 		Serial.println("Config");
 		JsonObject& root = jsonBuffer.parseObject(buffer);
-		CID = String((char *)root["cid"]);
+		const char* tmpCid = root["cid"].as<char*>();
+		CID = String(root["cid"].as<char*>());
 		sendConfig();
 	}
 
@@ -414,12 +422,12 @@ void mqttCallback(char* topic, uint8_t * payload, unsigned int len) {
 	{
 		Serial.println("cmd");
 		JsonObject& root = jsonBuffer.parseObject(buffer);
-		String tmp_C_CID = root["cid"];
+		String tmp_C_CID = String(root["cid"].as<char*>());
 		if (String(C_CID) != tmp_C_CID)
 		{
 			AlertReceive();
 			C_CID = tmp_C_CID;
-			String req = root["req"];
+			String req = root["req"].as<char*>();
 			if (req == SWITCH_OFF)
 			{
 				JsonObject& arg = root["arg"].asObject();;
@@ -442,7 +450,7 @@ void mqttCallback(char* topic, uint8_t * payload, unsigned int len) {
 		Serial.println("update resource");
 		JsonObject& root = jsonBuffer.parseObject(buffer);
 
-		String tmp_R_CID = root["cid"];
+		String tmp_R_CID = root["cid"].as<char*>();
 		R_CID = tmp_R_CID;
 		sendResources();
 	}
